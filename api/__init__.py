@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# import Telethon API modules
 from telethon import TelegramClient, types
 from telethon.tl.functions.channels import GetChannelsRequest, \
 	GetFullChannelRequest, GetParticipantsRequest
