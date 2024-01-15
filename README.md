@@ -27,6 +27,7 @@ This script creates JSON files with data from Telegram channels. It allows you t
 - `--min-id` Set the starting ID for downloading new posts.
 
 ### Output 📂
+```
 ├──🗂 output
 | └──🗂 data
 | └──🗂 <channel_name>
@@ -38,17 +39,16 @@ This script creates JSON files with data from Telegram channels. It allows you t
 | ├── counter.csv
 | ├── user_exceptions.txt
 | └── msgs_dataset.csv
-
+```
 ### Use
 
-´´´bash
+```
 python main.py --telegram-channel channelname
-´´´
+```
 
 **Output:**
 - Channel files: chats.txt, collected_chats.csv, user_exceptions.txt, counter.csv.
 - Folder `<channel_name>` with two JSON files (channel's metadata and posts).
-
 
 **Note:** Data is saved in the specified directory.
 
