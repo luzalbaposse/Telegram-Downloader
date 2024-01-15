@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+'''
+This script processes Telegram chat data from JSON files, extracting key information from each message and chat channel. It calculates statistics like the number of actions, posts, and replies, and gathers details about message content, timestamps, forwards, and media types. The script updates and saves this information in CSV and Excel files for further use and analysis.
+'''
 
-# import modules
+# -*- coding: utf-8 -*-
 import pandas as pd
 import argparse
 import json
@@ -8,10 +10,8 @@ import glob
 import time
 import os
 
-# import submodules
 from tqdm import tqdm
 
-# import local submodules
 from utils import (
 	chats_dataset_columns, clean_msg, msg_attrs, get_forward_attrs, get_reply_attrs,
 	get_url_attrs, get_document_attrs, get_poll_attrs, get_contact_attrs,
@@ -36,7 +36,7 @@ parser.add_argument(
 # Parse arguments
 args = vars(parser.parse_args())
 
-# get main path
+# main path
 if args['data_path']:
 	main_path = args['data_path']
 	if main_path.endswith('/'):
@@ -44,7 +44,7 @@ if args['data_path']:
 else:
 	main_path = './output/data'
 
-# log results
+# results
 text = f'''
 Init program at {time.ctime()}
 
@@ -95,7 +95,6 @@ for f in json_files:
 		fl.close()
 
 	'''
-
 	Get actions
 	'''
 	actions = obj['count']
@@ -118,7 +117,6 @@ for f in json_files:
 	)
 
 	'''
-
 	Attrs: views, forwards, replies
 	'''
 	views = sum(
@@ -140,7 +138,7 @@ for f in json_files:
 		]
 	)
 
-	# Add values to dataset
+	# values -> dataset
 	data.loc[data['username'] == username, 'collected_actions'] = actions
 	data.loc[data['username'] == username, 'collected_posts'] = posts
 	data.loc[data['username'] == username, 'replies'] = replies
@@ -150,7 +148,6 @@ for f in json_files:
 	data.loc[data['username'] == username, 'replies_received'] = replies_received
 
 	'''
-
 	Reading posts
 	'''
 	messages = obj['messages']
@@ -164,7 +161,6 @@ for f in json_files:
 
 	for idx, item in enumerate(messages):
 		'''
-
 		Iterate posts
 		'''
 		if item['_'] == 'Message':

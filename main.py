@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# import modules
 import pandas as pd
 import argparse
 import asyncio
@@ -8,20 +5,13 @@ import json
 import time
 import sys
 import os
-
-# import Telegram API submodules
 from api import *
 from utils import (
 	get_config_attrs, JSONEncoder, create_dirs, cmd_request_type,
 	write_collected_chats
 )
 
-'''
-
-Arguments
-
-'''
-
+#Parsing setup
 parser = argparse.ArgumentParser(description='Arguments.')
 parser.add_argument(
 	'--telegram-channel',
@@ -57,7 +47,6 @@ parser.add_argument(
 
 
 '''
-
 Updating data
 '''
 parser.add_argument(
@@ -67,8 +56,6 @@ parser.add_argument(
 )
 
 
-
-# parse arguments
 args = vars(parser.parse_args())
 config_attrs = get_config_attrs()
 
@@ -84,15 +71,6 @@ Init program at {time.ctime()}
 
 '''
 print (text)
-
-
-'''
-
-Variables
-
-'''
-
-# Telegram API credentials
 
 '''
 
@@ -110,12 +88,10 @@ loop = asyncio.get_event_loop()
 counter = {}
 
 '''
-
 > Get Client <API connection>
-
 '''
 
-# get `client` connection
+# Establishing API connection and getting client
 client = loop.run_until_complete(
 	get_connection(sfile, api_id, api_hash, phone)
 )
@@ -131,7 +107,7 @@ if req_type == 'batch':
 else:
 	req_input = [req_input]
 
-# reading | Creating an output folder
+# Output Folder
 if args['output']:
 	output_folder = args['output']
 	if output_folder.endswith('/'):
@@ -141,13 +117,13 @@ if args['output']:
 else:
 	output_folder = './output/data'
 
-# create dirs
+# Directories
 create_dirs(output_folder)
 
 
 '''
 
-Methods
+Methods:
 
 - GetHistoryRequest
 - SearchGlobalRequest
@@ -329,7 +305,6 @@ for channel in req_input:
 			time.sleep(2)
 	else:
 		'''
-
 		Channels not found
 		'''
 		exceptions_path = f'{output_folder}/_exceptions-channels-not-found.txt'
@@ -337,11 +312,6 @@ for channel in req_input:
 		w.write(f'{channel}\n')
 		w.close()
 
-'''
-
-Clean generated chats text file
-
-'''
 
 # close chat file
 chats_file.close()
@@ -351,7 +321,7 @@ collected_chats = list(set([
 	i.rstrip() for i in open(chats_path, mode='r', encoding='utf-8')
 ]))
 
-# re write collected chats
+# re write them
 chats_file = open(chats_path, mode='w', encoding='utf-8')
 for c in collected_chats:
 	chats_file.write(f'{c}\n')
@@ -395,6 +365,5 @@ df.to_csv(
 # log results
 text = f'''
 End program at {time.ctime()}
-
 '''
 print (text)
